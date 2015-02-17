@@ -17,7 +17,7 @@
 在前端页面中可以这样调用：
 ```js
   var currUrl = window.location.href.replace(window.location.hash, '');
-  $.getJSON('http://example.com/signature.php?url=' + currUrl).done(function(data) {
+  $.getJSON('http://example.com/signature.php?url=' + encodeURIComponent(currUrl)).done(function(data) {
     wx.config({
       debug: true,
       appId: data.appId,
