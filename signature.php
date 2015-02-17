@@ -9,4 +9,5 @@ $wxjsSignature->appid = '';
 $wxjsSignature->appsecret = '';
 $wxconfig = $wxjsSignature->config($url);
 
+header('Access-Control-Allow-Origin: *');
 echo json_encode($wxconfig);
