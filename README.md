@@ -3,7 +3,7 @@
 
 ## 使用须知安全性问题 !important
 
-因为代码中使用的是文件缓存，所以请保证 `/cache` 文件夹不可被 HTTP 直接访问，所以需要对 `/cache` 文件夹做权限的限制。
+因为代码中使用的是文件缓存可能导致 `access_token` 泄露，所以请保证 `/cache` 文件夹不可被 HTTP 直接访问，所以需要对 `/cache` 文件夹做权限的限制。
 
 ### Nginx
 在 nginx 中禁止用户访问 `/cache` 文件夹
@@ -33,59 +33,58 @@ deny from all
 ```
 在前端页面中可以这样调用：
 ```js
-  var currUrl = window.location.href.replace(window.location.hash, '');
-  $.getJSON('http://example.com/signature.php?url=' + encodeURIComponent(currUrl)).done(function(data) {
-    wx.config({
-      debug: true,
-      appId: data.appId,
-      timestamp: data.timestamp,
-      nonceStr: data.nonceStr,
-      signature: data.signature,
-      jsApiList: [
-        'checkJsApi',
-        'onMenuShareTimeline',
-        'onMenuShareAppMessage',
-        'onMenuShareQQ',
-        'onMenuShareWeibo',
-        'hideMenuItems',
-        'showMenuItems',
-        'hideAllNonBaseMenuItem',
-        'showAllNonBaseMenuItem',
-        'translateVoice',
-        'startRecord',
-        'stopRecord',
-        'onRecordEnd',
-        'playVoice',
-        'pauseVoice',
-        'stopVoice',
-        'uploadVoice',
-        'downloadVoice',
-        'chooseImage',
-        'previewImage',
-        'uploadImage',
-        'downloadImage',
-        'getNetworkType',
-        'openLocation',
-        'getLocation',
-        'hideOptionMenu',
-        'showOptionMenu',
-        'closeWindow',
-        'scanQRCode',
-        'chooseWXPay',
-        'openProductSpecificView',
-        'addCard',
-        'chooseCard',
-        'openCard'
-      ]
-    });
+var currUrl = window.location.href.replace(window.location.hash, '');
+$.getJSON('http://example.com/signature.php?url=' + encodeURIComponent(currUrl)).done(function(data) {
+  wx.config({
+    debug: true,
+    appId: data.appId,
+    timestamp: data.timestamp,
+    nonceStr: data.nonceStr,
+    signature: data.signature,
+    jsApiList: [
+      'checkJsApi',
+      'onMenuShareTimeline',
+      'onMenuShareAppMessage',
+      'onMenuShareQQ',
+      'onMenuShareWeibo',
+      'hideMenuItems',
+      'showMenuItems',
+      'hideAllNonBaseMenuItem',
+      'showAllNonBaseMenuItem',
+      'translateVoice',
+      'startRecord',
+      'stopRecord',
+      'onRecordEnd',
+      'playVoice',
+      'pauseVoice',
+      'stopVoice',
+      'uploadVoice',
+      'downloadVoice',
+      'chooseImage',
+      'previewImage',
+      'uploadImage',
+      'downloadImage',
+      'getNetworkType',
+      'openLocation',
+      'getLocation',
+      'hideOptionMenu',
+      'showOptionMenu',
+      'closeWindow',
+      'scanQRCode',
+      'chooseWXPay',
+      'openProductSpecificView',
+      'addCard',
+      'chooseCard',
+      'openCard'
+    ]
   });
+});
 ```
 微信 JSSDK 会在 wx.config 方法执行完之后执行 wx.ready 方法，所以使用微信 JSSDK 的方法应写到 wx.ready 方法内。
 
 附带一个自定义微信分享的代码片段
 ```javascript
 wx.ready(function() {
-
   var shareTitle = '微信分享标题';
   var shareDesc = '微信分享描述';
   var shareLink = '微信分享链接';
